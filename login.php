@@ -1,16 +1,8 @@
 <?php
 session_start();
 
-// Database Connection
-$servername = "localhost";
-$usernameDB = "root";
-$passwordDB = "";
-$database = "library";
-
-$conn = new mysqli($servername, $usernameDB, $passwordDB, $database);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include database configuration
+require_once 'config.php';
 
 // Handle Login
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
@@ -27,11 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
         if (password_verify($password, $row['password'])) {
             $_SESSION['username'] = $row['username'];
             
-
             if ($row['role'] == "admin") {
-                header("Location: admin.php");
+                header("Location: admin/admin.php");
             } else {
-                header("Location: admin.php");
+                header("Location: admin/admin.php");
             }
             exit();
         } else {
@@ -42,12 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     }
 }
 
-
 // Handle Registration
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $username = trim($_POST['username']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $role = $_POST['role'];
+    $role = isset($_POST['role']) ? $_POST['role'] : 'user';
 
     $sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
@@ -58,9 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     } else {
         $_SESSION['error'] = "Error: " . $conn->error;
     }
-   
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -68,70 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Management</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Library Management - Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.login-container {
-    background-color: #d4c7f5;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 300px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.logo {
-    width: 100px;
-    margin-bottom: 10px;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    text-align: left;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-input {
-    width: 100%; 
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #444;
-}
-</style>
-
 <div class="login-container">
     <img src="booklogo.png" alt="Library Logo" class="logo">
 
@@ -166,14 +94,12 @@ button:hover {
             <input type="text" name="username" required>
             <label>Password:</label>
             <input type="password" name="password" required>
-            <label>Role:</label>
-            
+            <input type="hidden" name="role" value="user">
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="login.php?page=login">Login</a></p>
     <?php } ?>
 </div>
-
 </body>
 </html>
 
