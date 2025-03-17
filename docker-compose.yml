@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 services:
   web:
     build: .
@@ -20,8 +21,41 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root_password
       - MYSQL_DATABASE=library
+=======
+version: '3.8'
+
+services:
+  php-apache:
+    build: .
+    container_name: php_library_system
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=library
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_library
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: library
+    ports:
+      - "3306:3306"
+>>>>>>> 02810bafa16288c910a3148f3d9690e6cc2bce51
     volumes:
       - mysql_data:/var/lib/mysql
 
 volumes:
+<<<<<<< HEAD
   mysql_data: 
+=======
+  mysql_data:
+>>>>>>> 02810bafa16288c910a3148f3d9690e6cc2bce51

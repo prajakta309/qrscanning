@@ -267,7 +267,7 @@ tr:hover {
 
 <div class="buttons">
     <button type="submit" class="return-btn">Date Returned</button>
-    <button type="button" class="return-btn" onclick="window.location.href='admin.php'">Exit</button>
+    <button type="button" class="return-btn" onclick="window.location.href='index.php'">Exit</button>
 </div>
 
         </div>

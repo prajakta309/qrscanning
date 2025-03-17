@@ -10,7 +10,7 @@ $adminCredentials = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['username'] === $adminCredentials['username'] && $_POST['password'] === $adminCredentials['password']) {
         $_SESSION['logged_in'] = true;
-        header('Location: admin.php');
+        header('Location: index.php');
         exit();
     } else {
         $error = 'Invalid credentials!';

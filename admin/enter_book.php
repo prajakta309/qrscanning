@@ -184,7 +184,7 @@ $conn->close();
     <div class="sidebar">
         <h2>Admin Panel</h2>
         <ul>
-            <li><a href="admin.php">QR</a></li>
+            <li><a href="index.php">QR</a></li>
             <li><a href="enter_book.php">Book Details</a></li>
             <li><a href="genrec.php">Library Records</a></li>
             <li><a href="returnbook.php">Return Book</a></li>
