@@ -20,8 +20,16 @@ RUN a2enmod rewrite
 # Set working directory
 WORKDIR /var/www/html
 
+# Create necessary directories
+RUN mkdir -p /var/www/html/admin
+
 # Copy application files
-COPY . /var/www/html/
+COPY ./admin/* /var/www/html/admin/
+COPY ./*.php /var/www/html/
+COPY ./*.css /var/www/html/
+COPY ./*.conf /var/www/html/
+COPY ./*.png /var/www/html/
+COPY ./*.jpg /var/www/html/
 
 # Configure Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
@@ -37,6 +45,9 @@ RUN chown -R www-data:www-data /var/www/html \
 RUN echo '#!/bin/bash\n\
 apache2-foreground' > /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
+
+# Create index.php that redirects to login.php
+RUN echo '<?php header("Location: login.php"); ?>' > /var/www/html/index.php
 
 # Expose port
 EXPOSE 8080

@@ -18,11 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     if ($row = $result->fetch_assoc()) {
         if (password_verify($password, $row['password'])) {
             $_SESSION['username'] = $row['username'];
+            $_SESSION['role'] = $row['role'];
             
+            // Redirect based on role
             if ($row['role'] == "admin") {
-                header("Location: admin/admin.php");
+                header("Location: admin/index.php");
             } else {
-                header("Location: admin/admin.php");
+                header("Location: admin/index.php");
             }
             exit();
         } else {
