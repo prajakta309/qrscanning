@@ -1,0 +1,43 @@
+services:
+  # Web Service
+  - type: web
+    name: library-management
+    env: docker
+    plan: free
+    region: singapore # Choose your preferred region
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: MYSQL_HOST
+        fromDatabase:
+          name: library-db
+          property: host
+      - key: MYSQL_USER
+        fromDatabase:
+          name: library-db
+          property: user
+      - key: MYSQL_PASSWORD
+        fromDatabase:
+          name: library-db
+          property: password
+      - key: MYSQL_DATABASE
+        fromDatabase:
+          name: library-db
+          property: database
+
+  # Database Service
+  - type: pserv
+    name: library-db
+    env: docker
+    plan: free
+    region: singapore # Choose your preferred region
+    disk:
+      name: data
+      mountPath: /var/lib/mysql
+      sizeGB: 1
+    image: mysql:5.7
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+      - key: MYSQL_DATABASE
+        value: library 
