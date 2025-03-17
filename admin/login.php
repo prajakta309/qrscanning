@@ -142,7 +142,7 @@ button:hover {
 
     <?php if (!isset($_GET['page']) || $_GET['page'] == "login") { ?>
         <h2>Login</h2>
-        <form action="admin.php?page=login" method="POST">           
+        <form action="index.php?page=login" method="POST">           
              <input type="text" name="username" required placeholder="Username">
             <input type="password" name="password" required placeholder="Password">
             <button type="submit" name="login">Login</button>
