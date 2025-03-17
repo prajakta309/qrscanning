@@ -13,14 +13,9 @@ WORKDIR /var/www/html
 # Copy project files to the container
 COPY . /var/www/html/
 
-# Set Apache ServerName to fix warning
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-# Change ownership and permissions
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
-
-# Expose port 80 for web traffic
-EXPOSE 80
-
-# Start Apache server
-CMD ["apache2-foreground"]
+RUN echo "<Directory /var/www/html/> \
+    Options -Indexes +FollowSymLinks \
+    AllowOverride All \
+    Require all granted \
+</Directory>" > /etc/apache2/conf-available/custom.conf \
+&& a2enconf custom
